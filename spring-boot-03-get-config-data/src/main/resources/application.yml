@@ -1,0 +1,16 @@
+person:
+  name: william
+  age: 23
+  birth: 1997/08/21
+  man: true
+  info: {height: 180,weight: 73}
+  friends:
+    - ivan
+    - tom
+  pet:
+    name: wang
+    age: 2
+
+
+server:
+  port: 8080
