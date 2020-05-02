@@ -1,12 +1,18 @@
 package com.ideaworks.entity;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Email;
+import javax.validation.executable.ValidateOnExecution;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Objects;
 
 
 /**
@@ -16,29 +22,48 @@ import java.util.Map;
  *  配置文件中哪个下面的所有属性进行一一映射
  */
 @Component
+@PropertySource(value = {"classpath:person.properties"})
 @ConfigurationProperties(prefix = "person")
+//@Validated
 public class Person {
+
+    private String site;
+//    @Value("${person.name}")
+//    @Email
     private String name;
+//    @Value("#{11*2+1}")
     private Integer age;
-    private Date birth;
+//    @Value("false")
     private boolean man;
+//    @Value("${person.birth}")
+    private Date birth;
     private Map<String,Object> info;
+//    @Value("${person.friends}")
     private List<Object> friends;
+//    @Value("${person.pet}")
     private Pet pet;
 
     @Override
     public String toString() {
         return "Person{" +
-                "name='" + name + '\'' +
+                "site='" + site + '\'' +
+                ", name='" + name + '\'' +
                 ", age=" + age +
-                ", birth=" + birth +
                 ", man=" + man +
+                ", birth=" + birth +
                 ", info=" + info +
                 ", friends=" + friends +
                 ", pet=" + pet +
                 '}';
     }
 
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
+    }
     public void setName(String name) {
         this.name = name;
     }
@@ -93,5 +118,25 @@ public class Person {
 
     public Pet getPet() {
         return pet;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return man == person.man &&
+                Objects.equals(site, person.site) &&
+                Objects.equals(name, person.name) &&
+                Objects.equals(age, person.age) &&
+                Objects.equals(birth, person.birth) &&
+                Objects.equals(info, person.info) &&
+                Objects.equals(friends, person.friends) &&
+                Objects.equals(pet, person.pet);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(site, name, age, man, birth, info, friends, pet);
     }
 }
